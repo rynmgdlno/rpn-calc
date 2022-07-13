@@ -1,3 +1,7 @@
+import { flagFuncs } from "./lib/commandLineFlags";
+import { supportedFlags, supportedOperators } from './lib/constants'
+import { flagMessages } from "./lib/messages";
+
 export const operators: { [key: string]: Function } = {
   "+": (a: number, b: number) => b + a,
   "-": (a: number, b: number) => b - a,
@@ -15,22 +19,44 @@ export const parse = (input: string) => {
   // non expression input handling:
   // verifying non empty input:
   if (input.length === 0) {
-    console.log('Empty input');
+    console.log("Empty input");
     return;
   }
 
   // verifying supported input:
   if (
     isNaN(parseInt(input)) &&
-    !['-', '+', '/', '*'].includes(input) 
+    !supportedOperators.includes(input) &&
+    !supportedFlags.includes(input)
   ) {
-    console.log('Invalid input')
+    console.log("Invalid input");
+    return;
+  }
+
+  // handling command line flags:
+  if (input === "-c" || input === "--Clear") {
+    stack = flagFuncs.clear(flagMessages[0]);
+    includesFloat = false;
+    return;
+  }
+
+  if (input === "-h" || input === "--Help") {
+    flagFuncs.help(flagMessages[1]);
+    return;
+  }
+
+  if (input === "-l" || input === "--List") {
+    flagFuncs.list(stack);
+    return;
+  }
+
+  if (input === "-q" || input === "--Quit") {
+    flagFuncs.quit(flagMessages[2]);
     return;
   }
 
   for (let i = 0; i < tokens.length; i++) {
     const val = tokens[i].trim();
-    // todo: convert to switch?
     if (
       val.includes(".") &&
       typeof parseInt(val) === "number" &&
@@ -40,17 +66,17 @@ export const parse = (input: string) => {
       stack.push(parseFloat(val));
     } else if (typeof parseInt(val) === "number" && !isNaN(parseInt(val))) {
       stack.push(parseInt(val, 10));
-    } else if (['-', '+', '/', '*'].includes(val)) {
+    } else if (["-", "+", "/", "*"].includes(val)) {
       if (stack.length) {
         stack.push(operators[val](stack.pop(), stack.pop()));
       } else {
-        console.log('Invalid expression')
+        console.log("Invalid expression");
       }
     }
   }
 
   // formatting output to maintain float
-  // decimal syntax per requirement example
+  // decimal syntax per requirement example:
   if (
     stack.length === 1 &&
     includesFloat &&
@@ -64,7 +90,7 @@ export const parse = (input: string) => {
 
 // command line functionality driver:
 process.stdin.resume();
-console.log("Enter an expression, number, or operator:")
+console.log("Enter an expression, number, or operator:");
 process.stdin.on("data", data => {
   parse(data.toString());
 });

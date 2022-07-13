@@ -1,0 +1,13 @@
+{
+  "name": "rpn-calc",
+  "version": "1.0.0",
+  "description": "RPN Calculator Command Line Tool",
+  "main": "index.js",
+  "repository": "git@github.com:rynmgdlno/rpn-calc.git",
+  "author": "rynmgdlno <rynmgdlno@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "typescript": "^4.7.4"
+  }
+}

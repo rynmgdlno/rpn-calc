@@ -62,4 +62,9 @@ export const parse = (input: string) => {
   }
 };
 
-parse('8 9 3 5 2 - - + *')
+// command line functionality driver:
+process.stdin.resume();
+console.log("Enter an expression, number, or operator:")
+process.stdin.on("data", data => {
+  parse(data.toString());
+});

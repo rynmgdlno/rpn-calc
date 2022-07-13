@@ -1,6 +1,7 @@
 import { flagFuncs } from "./lib/commandLineFlags";
-import { supportedFlags, supportedOperators } from './lib/constants'
-import { flagMessages } from "./lib/messages";
+import { supportedFlags, supportedOperators } from "./lib/constants";
+import { errors, flagMessages } from "./lib/messages";
+import { printError, printMessage } from "./lib/util";
 
 export const operators: { [key: string]: Function } = {
   "+": (a: number, b: number) => b + a,
@@ -19,7 +20,7 @@ export const parse = (input: string) => {
   // non expression input handling:
   // verifying non empty input:
   if (input.length === 0) {
-    console.log("Empty input");
+    printError(errors[0]);
     return;
   }
 
@@ -29,7 +30,7 @@ export const parse = (input: string) => {
     !supportedOperators.includes(input) &&
     !supportedFlags.includes(input)
   ) {
-    console.log("Invalid input");
+    printError(errors[1]);
     return;
   }
 
@@ -70,7 +71,7 @@ export const parse = (input: string) => {
       if (stack.length) {
         stack.push(operators[val](stack.pop(), stack.pop()));
       } else {
-        console.log("Invalid expression");
+        printError(errors[2]);
       }
     }
   }
@@ -82,15 +83,15 @@ export const parse = (input: string) => {
     includesFloat &&
     !stack[0].toString().includes(".")
   ) {
-    console.log(`${stack[0]}.0`);
+    console.log(`>> ${stack[0]}.0`);
   } else {
-    console.log(`${stack}`);
+    console.log(`>> ${stack}`);
   }
 };
 
 // command line functionality driver:
 process.stdin.resume();
-console.log("Enter an expression, number, or operator:");
+printMessage(flagMessages[1])
 process.stdin.on("data", data => {
   parse(data.toString());
 });

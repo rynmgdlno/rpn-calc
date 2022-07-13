@@ -1,6 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flagMessages = void 0;
+exports.flagMessages = exports.errors = void 0;
+exports.errors = [
+    {
+        code: 0,
+        message: "Empty Input. Run the app with the '-h' flag for more information."
+    },
+    {
+        code: 1,
+        message: "Invalid Input: Please check that only numbers or accepted operators have been supplied. Run the '-h' flag for more information."
+    },
+    {
+        code: 2,
+        message: "Invalid Expression: The expression is likely badly formatted or contains the wrong number of operators. Run the app with the '-h' flag for more information."
+    }
+];
 exports.flagMessages = [
     "The current expression has been cleared.",
     `Welcome to RPN Calculator
@@ -22,9 +36,9 @@ exports.flagMessages = [
     -h, --Help: Shows this message.
     -c, --Clear: Clear the current expression.
     -l, --List: Print the current expression.
-    -q, --Quit: Quit the program.`,
+    -q, --Quit: Quit the program.
+    
+    Enter an expression to get started:`,
     "Goodbye"
 ];
-// export const errorMessages: string[] = [
-// ]
 //# sourceMappingURL=messages.js.map

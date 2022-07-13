@@ -4,6 +4,7 @@ exports.parse = exports.operators = void 0;
 const commandLineFlags_1 = require("./lib/commandLineFlags");
 const constants_1 = require("./lib/constants");
 const messages_1 = require("./lib/messages");
+const util_1 = require("./lib/util");
 exports.operators = {
     "+": (a, b) => b + a,
     "-": (a, b) => b - a,
@@ -18,14 +19,14 @@ const parse = (input) => {
     // non expression input handling:
     // verifying non empty input:
     if (input.length === 0) {
-        console.log("Empty input");
+        (0, util_1.printError)(messages_1.errors[0]);
         return;
     }
     // verifying supported input:
     if (isNaN(parseInt(input)) &&
         !constants_1.supportedOperators.includes(input) &&
         !constants_1.supportedFlags.includes(input)) {
-        console.log("Invalid input");
+        (0, util_1.printError)(messages_1.errors[1]);
         return;
     }
     // handling command line flags:
@@ -62,7 +63,7 @@ const parse = (input) => {
                 stack.push(exports.operators[val](stack.pop(), stack.pop()));
             }
             else {
-                console.log("Invalid expression");
+                (0, util_1.printError)(messages_1.errors[2]);
             }
         }
     }
@@ -71,16 +72,16 @@ const parse = (input) => {
     if (stack.length === 1 &&
         includesFloat &&
         !stack[0].toString().includes(".")) {
-        console.log(`${stack[0]}.0`);
+        console.log(`>> ${stack[0]}.0`);
     }
     else {
-        console.log(`${stack}`);
+        console.log(`>> ${stack}`);
     }
 };
 exports.parse = parse;
 // command line functionality driver:
 process.stdin.resume();
-console.log("Enter an expression, number, or operator:");
+(0, util_1.printMessage)(messages_1.flagMessages[1]);
 process.stdin.on("data", data => {
     (0, exports.parse)(data.toString());
 });

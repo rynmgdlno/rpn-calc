@@ -8,4 +8,5 @@ export const supportedFlags: string[] = [
   "-l",
   "--List"
 ];
+
 export const supportedOperators: string[] = ["+", "-", "*", "/"];

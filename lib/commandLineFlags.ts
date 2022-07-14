@@ -1,10 +1,11 @@
+// Command line flag functions:
+
 import { printMessage } from './util'
 
 export const flagFuncs = {
   // clears/resets the current expression stack
-  clear: function(message: string|object): number[] {
+  clear: function(message: string|object): void {
     printMessage(message);
-    return [];
   },
   // prints help guide
   help: function(message: string|object): void {

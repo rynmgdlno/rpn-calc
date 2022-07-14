@@ -1,4 +1,5 @@
 "use strict";
+// Utility printing functions to help with formatting
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.printMessage = exports.printError = void 0;
 const printError = (error) => {

@@ -1,4 +1,5 @@
 "use strict";
+// Command line flag functions:
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.flagFuncs = void 0;
 const util_1 = require("./util");
@@ -6,7 +7,6 @@ exports.flagFuncs = {
     // clears/resets the current expression stack
     clear: function (message) {
         (0, util_1.printMessage)(message);
-        return [];
     },
     // prints help guide
     help: function (message) {

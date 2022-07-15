@@ -19,7 +19,7 @@ export const errors: InputError[] = [
 
 export const flagMessages: string[] = [
   "The current expression has been cleared.",
-  `Welcome to RPN Calculator
+    `Welcome to RPN Calculator
     This is a simple command line utility for evaluating
     Reverse Polish Notation expressions.
 

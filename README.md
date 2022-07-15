@@ -1,5 +1,5 @@
 # rpn-calc
-## Reverse Polish Notation Command Line Calculator in Node.js / Typescript
+### Reverse Polish Notation Command Line Calculator in Node.js / Typescript
 
 ## Usage
 rpn-calc requires Node.js to run, but has 0 dependencies. The dev dependencies are only needed

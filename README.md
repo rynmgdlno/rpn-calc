@@ -23,7 +23,7 @@ To run the tests: `yarn test`
 ### Operators:
 Current supported operators are: `-` `+` `/` and `*`. There is no operator precedence other than order of input.
 ### Examples:
-The program will read real numbers (specifically int or float) in combination with any of the supported operators,
+The program will read numbers (int or float) in combination with any of the supported operators,
 separated by spaces, in complete or partial expressions, or single characters. Enter is used to submit input. For example:
 ```
 4 7 5 - +

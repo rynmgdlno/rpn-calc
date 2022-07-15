@@ -10,6 +10,10 @@ export const errors: InputError[] = [
   {
     code: 2,
     message: "Invalid Expression: The expression is likely badly formatted or contains the wrong number of operators. Run the app with the '-h' flag for more information."
+  },
+  {
+    code: 3,
+    message: "Invalid Expression: Cannot divide by zero."
   }
 ];
 

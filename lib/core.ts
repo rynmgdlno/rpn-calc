@@ -1,102 +1,108 @@
 import { flagFuncs } from "./commandLineFlags";
 import { supportedFlags, supportedOperators } from "./constants";
-import { errors, flagMessages } from "./messages";
+import { errors } from "./messages";
 import { operators } from "./operators";
 import { printError } from "./util";
 
-// Main calculator function. Checks validity of input, if valid
+// Main "calculator" function. Checks validity of input, if valid:
 // push operand to stack or apply operator.
-export const calc = (
-  setIncludesFloat: Function,
-  stack: number[],
-  tokens: string[]
-) => {
-  for (let i = 0; i < tokens.length; i++) {
-    const val = tokens[i].trim();
-    // if float: push float and set includesFloat
-    // else if int: push int
-    // else if operator: apply
-    if (
-      val.includes(".") &&
-      typeof parseInt(val) === "number" &&
-      !isNaN(parseInt(val))
-    ) {
-      setIncludesFloat(true);
-      stack.push(parseFloat(val));
-    } else if (typeof parseInt(val) === "number" && !isNaN(parseInt(val))) {
-      stack.push(parseInt(val, 10));
-    } else if (["-", "+", "/", "*"].includes(val)) {
+export const evaluate = (stack: number[], tokens: string[]): void => {
+  for (const token of tokens) {
+    token.trim();
+    if (typeof parseFloat(token) === "number" && !isNaN(parseFloat(token))) {
+      // pushing operand to stack:
+      stack.push(parseFloat(token));
+    } else if (["-", "+", "/", "*"].includes(token)) {
       if (stack.length) {
-        stack.push(operators[val](stack.pop(), stack.pop()));
+        // retrieving in reverse in order to maintain logical
+        // readability in divide by zero check, operators call, and funcs
+        const b = stack.pop();
+        const a = stack.pop();
+        // prevent divide by zero:
+        if (b === 0 && token === "/") {
+          printError(errors[3]);
+          return;
+        }
+        // if operator: evaluate two top most values and replace in stack with result:
+        stack.push(operators[token](a, b));
       } else {
+        // invalid expression:
         printError(errors[2]);
       }
     }
   }
 };
 
-// JS/TS uses a "number" type instead of int/float etc, so
-// and will drop a trailing .0 even if the value is a float. The examples
+// * Initially was trying to maintain Int/Float determinations
+// * to maintain consistency with requirements examples
+// * but this is outside the scope of this project
+// * - - START Old Comments For Reference:
+// JS/TS uses a "number" type instead of int/float/double etc,
+// and will drop a trailing .0 even if the value is a "float". The examples
 // in the requirements display maintaining trailing .0, so this serves
 // just to keep the format consistent with the example:
-export const formatOutput = (includesFloat: boolean, stack: number[]) => {
-  if (
-    stack.length === 1 &&
-    includesFloat &&
-    !stack[0].toString().includes(".")
-  ) {
-    console.log(`>> ${stack[0]}.0`);
-  } else {
-    console.log(`>> ${stack}`);
-  }
+// * - - END Old Comments For Reference - -
+
+export const formatOutput = (stack: number[]): void => {
+  console.log("\x1b[33m%s\x1b[0m", `>> ${stack}`);
+  // if (
+  //   stack.length === 1 &&
+  //   !stack[0].toString().includes(".")
+  // ) {
+  //   console.log(`>> ${stack[0]}.0`);
+  // } else {
+  //   console.log(`>> ${stack}`);
+  // }
 };
 
 // Calls the specified function based on flag input in the command line:
-export const handleFlags = (
-  setIncludesFloat: Function,
-  input: string,
-  stack: number[]
-) => {
+export const handleFlags = (input: string, stack: number[]): void => {
+  const { clear, help, list, quit } = flagFuncs;
   input = input.trim();
-  if (input === "-c" || input === "--Clear") {
-    stack.length = 0;
-    setIncludesFloat(false);
-    return;
-  }
 
-  if (input === "-h" || input === "--Help") {
-    flagFuncs.help(flagMessages[1]);
-    return;
-  }
-
-  if (input === "-l" || input === "--List") {
-    flagFuncs.list(stack);
-    return;
-  }
-
-  if (input === "-q" || input === "--Quit") {
-    flagFuncs.quit(flagMessages[2]);
-    return;
+  switch (input) {
+    case "-c":
+    case "--Clear":
+      clear(stack);
+      return;
+    case "-h":
+    case "--Help":
+      help();
+      return;
+    case "-l":
+    case "--List":
+      list(stack);
+      return;
+    case "-q":
+    case "--Quit":
+      quit();
+      return;
+    default:
+      return;
   }
 };
 
 // checks validity of input and returns a sanitized token
 // array to be further processed:
-export const parse = (input: string) => {
+export const parse = (input: string): string[] | void => {
   input = input.trim();
+
   // verifying non empty input:
-  if (input.length === 0) {
+  if (!input.length) {
     printError(errors[0]);
     return;
   }
   // verifying supported input:
-  if (
-    isNaN(parseInt(input)) &&
-    !supportedOperators.includes(input) &&
-    !supportedFlags.includes(input)
-  ) {
-    printError(errors[1]);
-    return;
+  const tokens = input.split(" ");
+  for (const token of tokens) {
+    if (
+      isNaN(parseFloat(token)) &&
+      !supportedOperators.includes(token) &&
+      !supportedFlags.includes(token)
+    ) {
+      printError(errors[1]);
+      return;
+    }
   }
-  return input!.toString()!.split(" ");
+  return tokens;
 };

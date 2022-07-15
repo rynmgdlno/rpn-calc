@@ -75,7 +75,7 @@ article by Lachlan Miller (from the Cypress team), but given this I may build my
 minimal testing suite for my own projects where I want to use ES6 modules but incorporating
 a bundler would be overkill or not desired. 
 
-Note: The frameworks that I tried beforethis were: Jest, Jasmine, and Mocha,
+Note: The frameworks that I tried before this were: Jest, Jasmine, and Mocha,
 and all had similar complaints about ES Modules.
 
 **Lessons Learned:** Always incorporate testing from the beginning!

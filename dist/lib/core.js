@@ -7,18 +7,17 @@ const messages_1 = require("./messages");
 const operators_1 = require("./operators");
 const util_1 = require("./util");
 // Main "calculator" function. Checks validity of input, if valid:
-// push operand to stack or apply operator.
+// push operand to stack or process operator.
 const evaluate = (stack, tokens) => {
     for (const token of tokens) {
-        token.trim();
         if (typeof parseFloat(token) === "number" && !isNaN(parseFloat(token))) {
             // pushing operand to stack:
             stack.push(parseFloat(token));
         }
-        else if (["-", "+", "/", "*"].includes(token)) {
-            if (stack.length) {
-                // retrieving in reverse in order to maintain logical
-                // readability in divide by zero check, operators call, and funcs
+        else if (constants_1.supportedOperators.includes(token)) {
+            if (stack.length > 1) {
+                // retrieving in "reverse" order to maintain logical
+                // readability in divide by zero check, operators calls, and funcs
                 const b = stack.pop();
                 const a = stack.pop();
                 // prevent divide by zero:
@@ -32,20 +31,23 @@ const evaluate = (stack, tokens) => {
             else {
                 // invalid expression:
                 (0, util_1.printError)(messages_1.errors[2]);
+                return;
             }
         }
     }
 };
 exports.evaluate = evaluate;
-// * Initially was trying to maintain Int/Float determinations
-// * to maintain consistency with requirements examples
-// * but this is outside the scope of this project
-// * - - START Old Comments For Reference:
-// JS/TS uses a "number" type instead of int/float/double etc,
-// and will drop a trailing .0 even if the value is a "float". The examples
-// in the requirements display maintaining trailing .0, so this serves
-// just to keep the format consistent with the example:
-// * - - END Old Comments For Reference - -
+/**
+ * * Initially I was trying to maintain Int/Float determinations
+ * * (at least in formatting) to maintain consistency with the
+ * * requirements examples, but this is outside the scope of this project
+ * * - - START Old Comments For Reference:
+ * JS/TS uses a "number" type instead of int/float/double etc,
+ * and will drop a trailing .0 even if the value is a "float". The examples
+ * in the requirements display maintaining trailing .0, so this serves
+ * just to keep the format consistent with the example:
+ * * - - END Old Comments For Reference - -
+ */
 const formatOutput = (stack) => {
     console.log("\x1b[33m%s\x1b[0m", `>> ${stack}`);
     // if (
@@ -95,13 +97,14 @@ const parse = (input) => {
     }
     // verifying supported input:
     const tokens = input.split(" ");
-    for (const token of tokens) {
+    for (let token of tokens) {
         if (isNaN(parseFloat(token)) &&
             !constants_1.supportedOperators.includes(token) &&
             !constants_1.supportedFlags.includes(token)) {
             (0, util_1.printError)(messages_1.errors[1]);
             return;
         }
+        token = token.trim();
     }
     return tokens;
 };

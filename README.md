@@ -64,16 +64,19 @@ incorporate testing. I learned a decent amount of testing frameworks/libraries d
 play nicely with Typescript when using modules, to the point that implementing
 a working solution would require complex custom configs, using Webpack, or rewriting for commonjs,
 all which would require more time than I had,
-but this lead learning some new things which I consider a net +. 
+but this lead to learning some new things which I consider a net +. 
 
 As such I've implemented
 a simple (and unfinished) basic testing "suite", more so to see how it would be done 
 and show how it is quite simple to implement 
 (though of course this would need to be much more fleshed out for complete coverage). 
 I can't take any credit for it as I found a great 
-article by Lachlan Miller (from the Cypress team), but given this I may flesh out a
-complete DIY minimal testing suite for my own projects. The frameworks that I tried before
-this were: Jest, Jasmine, and Mocha, and all had similar complaints about ES Modules.
+article by Lachlan Miller (from the Cypress team), but given this I may build my own
+minimal testing suite for my own projects where I want to use ES6 modules but incorporating
+a bundler would be overkill or not desired. 
+
+Note: The frameworks that I tried beforethis were: Jest, Jasmine, and Mocha,
+and all had similar complaints about ES Modules.
 
 **Lessons Learned:** Always incorporate testing from the beginning!
 

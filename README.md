@@ -51,35 +51,38 @@ and my familiarity with it I decided it was the best option.
 
 ### Implementation
 Node's native `process` is used for receiving command line input via `stdin`.  
-Input is then passed to `app()` which further passes it to 4 further functions: 
+Input is then passed to `app()` which further passes it to 4 functions: 
 `handleFlags()`, which as you guessed handles the displaying/execution of command
 line flags, `parse()` which sanitizes and tokenizes the input, `evaluate()` which 
 handles the stack and calculations, and `formatOutput()`, which makes it look a 
 little nicer. Given the linear nature of RPN expressions a stack (array) is used to store
 operands. When an operator is parsed, the last two values on the stack are evaluated. 
 
-
 ## Issues Encountered
 I made two (related) mistakes; using ES6 Modules and waiting until the end to
 incorporate testing. I learned a decent amount of testing frameworks/libraries do not
 play nicely with Typescript when using modules, to the point that implementing
-a working solution would require more time than available (or rewriting for commonjs). 
+a working solution would require complex custom configs, using Webpack, or rewriting for commonjs,
+all which would require more time than I had,
+but this lead learning some new things which I consider a net +. 
 
 As such I've implemented
 a simple (and unfinished) basic testing "suite", more so to see how it would be done 
-and show how it is quite simple (though of course this would need to be more fleshed out for complete coverage). I can't take any credit for it as I found a great 
-article by Lachlan Miller (from the Cypress team). But given this I may flesh out a
-complete DIY minimal testing suite for my own projects. The frameworks that I tried were:
-Jest, Jasmine, and Mocha, and all had similar complaints about ES Modules.
+and show how it is quite simple to implement 
+(though of course this would need to be much more fleshed out for complete coverage). 
+I can't take any credit for it as I found a great 
+article by Lachlan Miller (from the Cypress team), but given this I may flesh out a
+complete DIY minimal testing suite for my own projects. The frameworks that I tried before
+this were: Jest, Jasmine, and Mocha, and all had similar complaints about ES Modules.
 
 **Lessons Learned:** Always incorporate testing from the beginning!
 
 ## References / Citations
 As mentioned before I found some great information about building a "DIY" testing 
-suite from a great article:
+suite from this article:
 
 [A Simple JavaScript test framework from scratch - Lachlan Miller](https://codeburst.io/a-simple-javascript-test-framework-from-scratch-89d6e7d22e74)
 
-Any Information I needed regarding RPN came from [Wikipedia](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
+Any Information I needed regarding RPN came from [Wikipedia - Reverse Polish Notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
 
 And of course the docs for [Typescript](https://www.typescriptlang.org) and [Node](https://nodejs.org/en/docs/) for the odd lookup.
